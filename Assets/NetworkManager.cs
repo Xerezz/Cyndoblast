@@ -41,8 +41,8 @@ public class NetworkManager : MonoBehaviour {
 				Begin();
 		}
 		if (Time.time - timer > 60) {
-			if(GUI.Button(new Rect(100, 100, 400, 100), "Finish"))
-				finish();
+			if(GUI.Button(new Rect(100, 430, 250, 100), "Quit"))
+				Application.Quit();
 			GameObject[] objects = GameObject.FindGameObjectsWithTag("Player");
 			GameObject winner = objects[0];
 			for(int i = 0; i < objects.Length; i++){
