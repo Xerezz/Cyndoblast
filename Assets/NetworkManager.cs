@@ -31,6 +31,9 @@ public class NetworkManager : MonoBehaviour {
 
 			gameName = GUI.TextField(new Rect(100, 320, 250, 100),gameName, 25);
 
+			if(GUI.Button(new Rect(100, 430, 250, 100), "Quit"))
+				Application.Quit();
+
 			if(hostList != null){
 				for(int i = 0; i < hostList.Length; i++){
 					if(GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName))
@@ -78,6 +81,9 @@ public class NetworkManager : MonoBehaviour {
 				i++;
 			}
 			MasterServer.ClearHostList();
+		}
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			Network.Disconnect();
 		}
 	}
 }
