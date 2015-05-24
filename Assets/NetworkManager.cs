@@ -41,6 +41,7 @@ public class NetworkManager : MonoBehaviour {
 				Begin();
 		}
 		if (Time.time - timer > 60 && Network.isServer) {
+			this.GetComponent<NetworkView> ().RPC ("EndPlayers",RPCMode.All,null);
 			if(GUI.Button(new Rect(100, 430, 250, 100), "Quit"))
 				Application.Quit();
 			GameObject[] objects = GameObject.FindGameObjectsWithTag("Player");
@@ -103,6 +104,11 @@ public class NetworkManager : MonoBehaviour {
 			started = true;
 			SpawnPlayer ();
 		}
+	}
+
+	[RPC]
+	public void EndPlayers(){
+		started = false;
 	}
 
 	// Use this for initialization
