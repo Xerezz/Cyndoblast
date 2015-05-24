@@ -6,6 +6,7 @@ public class NetworkManager : MonoBehaviour {
 	private string typeName = "Cnidoblast";
 	private string gameName = "RoomName";
 	private bool started = false;
+	public float timer;
 
 	private void StartServer(){
 		//MasterServer.ipAddress = "127.0.0.1";
@@ -26,12 +27,29 @@ public class NetworkManager : MonoBehaviour {
 	private void Begin(){
 		this.GetComponent<NetworkView> ().RPC ("SpawnPlayers",RPCMode.All,null);
 		started = true;
+		timer = Time.time;
+	}
+
+	private void finish(){
+		Network.Disconnect();
+		Application.LoadLevel (Application.loadedLevel);
 	}
 
 	void OnGUI(){
 		if (Network.isServer && !started) {
 			if(GUI.Button(new Rect(100, 100, 250, 100), "Start"))
 				Begin();
+		}
+		if (Time.time - timer > 60) {
+			if(GUI.Button(new Rect(100, 100, 400, 100), "Finish"))
+				finish();
+			GameObject[] objects = GameObject.FindGameObjectsWithTag("Player");
+			GameObject winner = objects[0];
+			for(int i = 0; i < objects.Length; i++){
+				if(objects[i].GetComponent<Controller>().getMass() > winner.GetComponent<Controller>().getMass())
+					winner = objects[i];
+			}
+			GUI.TextField(new Rect(100, 210, 400, 100),"Game Over " + winner.GetComponent<SpriteRenderer>().color + " wins!");
 		}
 		if (Network.isClient && !started) {
 			GUI.Button(new Rect(100, 100, 250, 100), "Waiting for Server");
@@ -102,15 +120,6 @@ public class NetworkManager : MonoBehaviour {
 		}
 		if (Network.isServer && started) {
 			this.GetComponent<NetworkView> ().RPC ("SpawnPlayers",RPCMode.All,null);
-			if (Random.value < 0.01) {
-				GameObject releaseMass = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/mass", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 0)), Quaternion.identity, 0);
-				object[] args = {
-					Random.value,
-					0.0f,
-					0.0f
-				};
-				releaseMass.GetComponent<releasedMass> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
-			}
 		}
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Network.Disconnect();

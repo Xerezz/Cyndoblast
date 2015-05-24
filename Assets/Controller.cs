@@ -14,6 +14,7 @@ public class Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		gameObject.tag = "Player";
 		if (color == 1) {
 			this.GetComponent<SpriteRenderer>().color = Color.blue;
 		}else if (color == 2) {
@@ -93,6 +94,10 @@ public class Controller : MonoBehaviour {
 			transform.Translate (new Vector3 (xVelocity, yVelocity, 0) * Time.deltaTime, Camera.main.transform);
 			Camera.main.GetComponent<SmoothCamera>().target = transform;
 		}
+	}
+
+	public float getMass(){
+		return mass;
 	}
 
 	void move(){
