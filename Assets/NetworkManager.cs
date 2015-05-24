@@ -38,6 +38,7 @@ public class NetworkManager : MonoBehaviour {
 
 	private void finish(){
 		Network.Disconnect();
+		started = false;
 		foreach (GameObject o in Object.FindObjectsOfType<GameObject>()) {
 			if(o.name != "Main Camera" && o.name != "background")
 				Destroy (o);
@@ -46,12 +47,12 @@ public class NetworkManager : MonoBehaviour {
 
 	void OnGUI(){
 		if (Network.isServer && !started && !(Time.time - timer > 60)) {
-			if(GUI.Button(new Rect(100, 100, 250, 100), "Start"))
+			if(GUI.Button(new Rect(100, 20, 250, 100), "Start"))
 				Begin();
 		}
 		if (Time.time - timer > 60 && Network.isServer) {
 			this.GetComponent<NetworkView> ().RPC ("EndPlayers",RPCMode.All,null);
-			if(GUI.Button(new Rect(100, 210, 250, 100), "Reset"))
+			if(GUI.Button(new Rect(100, 130, 250, 100), "Reset"))
 				finish();
 			GameObject[] objects = GameObject.FindGameObjectsWithTag("Player");
 			if(objects.Length > 0){
@@ -60,32 +61,32 @@ public class NetworkManager : MonoBehaviour {
 					if(objects[i].GetComponent<Controller>().getMass() > winner.GetComponent<Controller>().getMass())
 						winner = objects[i];
 				}
-				GUI.TextField(new Rect(100, 100, 400, 100),"Game Over " + winner.GetComponent<SpriteRenderer>().color + " wins!");
+				GUI.TextField(new Rect(100, 20, 400, 100),"Game Over " + winner.GetComponent<SpriteRenderer>().color + " wins!");
 			}
 		}
 		if (Network.isClient && !started) {
-			GUI.Button(new Rect(100, 100, 250, 100), "Waiting for Server");
-			if(GUI.Button(new Rect(100, 210, 250, 100), "Reset"))
+			GUI.Button(new Rect(100, 20, 250, 100), "Waiting for Server");
+			if(GUI.Button(new Rect(100, 130, 250, 100), "Reset"))
 				finish();
 		}
 		if (!Network.isClient && !Network.isServer) {
-			if(GUI.Button(new Rect(100, 100, 250, 100), "Start Server"))
+			if(GUI.Button(new Rect(100, 20, 250, 100), "Start Server"))
 				StartServer();
 
-			if(GUI.Button(new Rect(100, 210, 250, 100), "Refresh Host List"))
+			if(GUI.Button(new Rect(100, 130, 250, 100), "Refresh Host List"))
 				RefreshHostList();
 
-			gameName = GUI.TextField(new Rect(100, 320, 250, 100),gameName, 25);
+			gameName = GUI.TextField(new Rect(100, 240, 250, 100),gameName, 25);
 
-			if(GUI.Button(new Rect(100, 430, 250, 100), "Reset"))
+			if(GUI.Button(new Rect(100, 350, 250, 100), "Reset"))
 				finish();
 
-			if(GUI.Button(new Rect(100, 540, 250, 100), "Quit"))
+			if(GUI.Button(new Rect(100, 460, 250, 100), "Quit"))
 				Application.Quit();
 
 			if(hostList != null){
 				for(int i = 0; i < hostList.Length; i++){
-					if(GUI.Button(new Rect(400, 100 + (110 * i), 300, 100), hostList[i].gameName))
+					if(GUI.Button(new Rect(400, 20 + (110 * i), 300, 100), hostList[i].gameName))
 						JoinServer(hostList[i]);
 				}
 			}

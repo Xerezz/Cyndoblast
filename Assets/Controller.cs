@@ -11,11 +11,13 @@ public class Controller : MonoBehaviour {
 	private const int screenWidth = 80;
 	private const int screenHeight = 40;
 	private static int color = 1;
+	private int ability;
 	private float lastshoot;
 
 	// Use this for initialization
 	void Start () {
-		lastshoot = Time.time-10;
+		ability = (int)(Random.value * 3);
+		lastshoot = Time.time-100;
 		gameObject.tag = "Player";
 		if (color == 1) {
 			this.GetComponent<SpriteRenderer>().color = Color.blue;
@@ -37,6 +39,14 @@ public class Controller : MonoBehaviour {
 		color++;
 	}
 
+	void OnTriggerStay2D(Collider2D coll){
+		if(coll.gameObject.name == "poisongas(Clone)") {
+			float lost = mass * 0.01f;
+			mass -= lost;
+			coll.gameObject.GetComponent<poisonGas>().setMass(lost + coll.gameObject.GetComponent<poisonGas>().getMass());
+		}
+	}                   
+
 	void OnTriggerEnter2D(Collider2D coll){
 		if(coll.gameObject.name == "mass(Clone)" && coll.gameObject.GetComponent<releasedMass>().getReady()) {
 			mass += coll.gameObject.GetComponent<releasedMass>().getMass();
@@ -45,8 +55,8 @@ public class Controller : MonoBehaviour {
 			float lost = mass * 0.4f;
 			mass *= 0.6f;
 			float angle = Random.value * Mathf.PI*2;
-			xVelocity = 40*Mathf.Cos(angle) * -1 * charge/Mathf.Exp(mass/Mathf.PI/2);
-			yVelocity = 40*Mathf.Sin(angle) * -1 * charge/Mathf.Exp(mass/Mathf.PI/2);
+			xVelocity = 40*Mathf.Cos(angle) * -1 * 0.5f/Mathf.Exp(mass/Mathf.PI/2);
+			yVelocity = 40*Mathf.Sin(angle) * -1 * 0.5f/Mathf.Exp(mass/Mathf.PI/2);
 			GameObject releaseMass = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/mass", typeof(GameObject)), transform.position, Quaternion.identity, 0);
 			object[] args = {
 				lost,
@@ -87,7 +97,7 @@ public class Controller : MonoBehaviour {
 			transform.localScale = new Vector3 (Mathf.Sqrt (mass / Mathf.PI) / 2, Mathf.Sqrt (mass / Mathf.PI) / 2, 1);
 			Vector3 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			transform.rotation = Quaternion.LookRotation (Vector3.forward, mousePosition - transform.position);
-			if(Input.GetMouseButtonDown(1) && Time.time - lastshoot > 10){
+			if(Input.GetMouseButtonDown(1) && Time.time - lastshoot > 7 && ability == 0){
 				lastshoot = Time.time;
 				mass *= 0.7f;
 				float angle = (transform.eulerAngles.z - 270) * Mathf.Deg2Rad;
@@ -97,6 +107,16 @@ public class Controller : MonoBehaviour {
 					20 * Mathf.Sin (angle) / Mathf.Exp ((0.01f) / Mathf.PI / 2)
 				};
 				bullet.GetComponent<bullet> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
+			}else if(Input.GetMouseButtonDown(1) && Time.time - lastshoot > 12 && ability == 1){
+				lastshoot = Time.time;
+				mass *= 0.7f;
+				float angle = (transform.eulerAngles.z - 270) * Mathf.Deg2Rad;
+				GameObject poisonbullet = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/poisonbullet", typeof(GameObject)), transform.position, Quaternion.identity, 0);
+				object[] args = {
+					2 * Mathf.Cos (angle) / Mathf.Exp ((0.01f) / Mathf.PI / 2),
+					2 * Mathf.Sin (angle) / Mathf.Exp ((0.01f) / Mathf.PI / 2)
+				};
+				poisonbullet.GetComponent<poisonBullet> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
 			}
 			if (Input.GetMouseButton (0)) {
 				charging = true;

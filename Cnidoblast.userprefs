@@ -1,10 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\releasedMass.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Controller.cs">
     <Files>
-      <File FileName="Assets\NetworkManager.cs" Line="39" Column="53" />
-      <File FileName="Assets\Controller.cs" Line="43" Column="15" />
-      <File FileName="Assets\releasedMass.cs" Line="44" Column="15" />
+      <File FileName="Assets\NetworkManager.cs" Line="41" Column="19" />
+      <File FileName="Assets\Controller.cs" Line="111" Column="38" />
+      <File FileName="Assets\releasedMass.cs" Line="47" Column="5" />
+      <File FileName="Assets\bullet.cs" Line="9" Column="30" />
+      <File FileName="Assets\poisonBullet.cs" Line="78" Column="59" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
