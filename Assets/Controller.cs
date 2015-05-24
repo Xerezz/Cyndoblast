@@ -17,8 +17,13 @@ public class Controller : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D coll){
 		if(coll.gameObject.name == "mass(Clone)" && coll.gameObject.GetComponent<releasedMass>().getReady()) {
 			mass += coll.gameObject.GetComponent<releasedMass>().getMass();
-			Network.Destroy(coll.gameObject);
+			Destroy(coll.gameObject);
 		}
+	}
+
+	[RPC]
+	private void destroy(GameObject g){
+		Destroy (g);
 	}
 
 	void OnTriggerExit2D(Collider2D coll){
