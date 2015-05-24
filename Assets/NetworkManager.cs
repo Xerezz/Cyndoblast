@@ -9,6 +9,7 @@ public class NetworkManager : MonoBehaviour {
 
 	private void StartServer(){
 		//MasterServer.ipAddress = "127.0.0.1";
+		Network.minimumAllocatableViewIDs = 500;
 		Network.InitializeServer (8, 25000, !Network.HavePublicAddress());
 		MasterServer.RegisterHost (typeName, gameName, "An epic cell game!");
 	}
@@ -24,6 +25,8 @@ public class NetworkManager : MonoBehaviour {
 
 	private void Begin(){
 		this.GetComponent<NetworkView> ().RPC ("SpawnPlayers",RPCMode.All,null);
+		Network.Instantiate (Resources.Load ("Prefabs/player", typeof(GameObject)), new Vector3(0,0,0), Quaternion.identity, 0);
+		started = true;
 	}
 
 	void OnGUI(){
@@ -80,8 +83,8 @@ public class NetworkManager : MonoBehaviour {
 	[RPC]
 	public void SpawnPlayers(){
 		if (!started) {
-			SpawnPlayer ();
 			started = true;
+			SpawnPlayer ();
 		}
 	}
 
@@ -94,16 +97,11 @@ public class NetworkManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(MasterServer.PollHostList().Length != 0){
-			HostData[] hostData = MasterServer.PollHostList();
-			int i = 0;
-			while(i < hostData.Length){
-				Debug.Log (hostData[i].gameName);
-				i++;
-			}
+			hostList = MasterServer.PollHostList();
 			MasterServer.ClearHostList();
 		}
 		if (Network.isServer && started) {
-			this.GetComponent<NetworkView> ().RPC ("SpawnPlayers",RPCMode.Others,null);
+			this.GetComponent<NetworkView> ().RPC ("SpawnPlayers",RPCMode.All,null);
 		}
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Network.Disconnect();

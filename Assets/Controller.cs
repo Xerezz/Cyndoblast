@@ -13,7 +13,7 @@ public class Controller : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+
 	}
 
 	void OnTriggerEnter2D(Collider2D coll){
@@ -21,11 +21,6 @@ public class Controller : MonoBehaviour {
 			mass += coll.gameObject.GetComponent<releasedMass>().getMass();
 			Destroy(coll.gameObject);
 		}
-	}
-
-	[RPC]
-	private void destroy(GameObject g){
-		Destroy (g);
 	}
 
 	void OnTriggerExit2D(Collider2D coll){
@@ -67,13 +62,14 @@ public class Controller : MonoBehaviour {
 			if (Mathf.Abs (yVelocity) < 0.1f) {
 				yVelocity = 0;
 			}
-			if (transform.position.x > screenWidth/2)
+			Vector3 board = Camera.main.WorldToViewportPoint(transform.position);
+			if (board.x > 1)
 				xVelocity = - Mathf.Abs (xVelocity);
-			if (transform.position.x < -screenWidth/2)
+			if (board.x < 0)
 				xVelocity = Mathf.Abs (xVelocity);
-			if (transform.position.y > screenHeight/2)
+			if (board.y > 1)
 				yVelocity = - Mathf.Abs (yVelocity);
-			if (transform.position.y < -screenHeight/2)
+			if (board.y < 0)
 				yVelocity = Mathf.Abs (yVelocity);
 			transform.Translate (new Vector3 (xVelocity, yVelocity, 0) * Time.deltaTime, Camera.main.transform);
 			Camera.main.GetComponent<SmoothCamera>().target = transform;

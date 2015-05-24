@@ -15,6 +15,7 @@ public class releasedMass : MonoBehaviour {
 	void Start () {
 		transform.localScale = new Vector3 (0, 0, 1);
 	}
+
 	[RPC]
 	public void setVariable(float m, float x, float y){
 		mass = m;
@@ -42,7 +43,7 @@ public class releasedMass : MonoBehaviour {
 				xVelocity,
 				yVelocity
 			};
-			this.GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
+			this.GetComponent<NetworkView>().RPC("setVariable", RPCMode.Others,args);
 		}
 		transform.localScale = new Vector3 (Mathf.Sqrt(mass/Mathf.PI)/2, Mathf.Sqrt(mass/Mathf.PI)/2, 1);
 		if (xVelocity < 0) {
@@ -61,13 +62,14 @@ public class releasedMass : MonoBehaviour {
 		if (Mathf.Abs(yVelocity) < 0.1f) {
 			yVelocity = 0;
 		}
-		if (transform.position.x > screenWidth/2)
+		Vector3 board = Camera.main.WorldToViewportPoint(transform.position);
+		if (board.x > 1)
 			xVelocity = - Mathf.Abs (xVelocity);
-		if (transform.position.x < -screenWidth/2)
+		if (board.x < 0)
 			xVelocity = Mathf.Abs (xVelocity);
-		if (transform.position.y > screenHeight/2)
+		if (board.y > 1)
 			yVelocity = - Mathf.Abs (yVelocity);
-		if (transform.position.y < -screenHeight/2)
+		if (board.y < 0)
 			yVelocity = Mathf.Abs (yVelocity);
 		transform.Translate (new Vector3(xVelocity,yVelocity,0) * Time.deltaTime, Camera.main.transform);
 	}
