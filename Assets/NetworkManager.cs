@@ -34,6 +34,9 @@ public class NetworkManager : MonoBehaviour {
 		Network.Instantiate (Resources.Load ("Prefabs/spike", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
 		Network.Instantiate (Resources.Load ("Prefabs/spike", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
 		Network.Instantiate (Resources.Load ("Prefabs/spike", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
+		Network.Instantiate (Resources.Load ("Prefabs/wall", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
+		Network.Instantiate (Resources.Load ("Prefabs/wall", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
+		Network.Instantiate (Resources.Load ("Prefabs/wall", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
 	}
 
 	private void finish(){

@@ -40,10 +40,13 @@ public class Controller : MonoBehaviour {
 			mass += coll.gameObject.GetComponent<releasedMass>().getMass();
 			Destroy(coll.gameObject);
 		}else if(coll.gameObject.name == "spike(Clone)") {
-			mass *= 0.7f;
+			mass *= 0.8f;
 			if (mass < 0.1f) {
 				mass = 0.1f;
 			}
+			xVelocity = - xVelocity;
+			yVelocity = - yVelocity;
+		}else if(coll.gameObject.name == "wall(Clone)") {
 			xVelocity = - xVelocity;
 			yVelocity = - yVelocity;
 		}
@@ -74,14 +77,14 @@ public class Controller : MonoBehaviour {
 				}
 			}
 			if (xVelocity < 0) {
-				xVelocity += 0.05f;
+				xVelocity += 0.02f;
 			} else {
-				xVelocity -= 0.05f;
+				xVelocity -= 0.02f;
 			}
 			if (yVelocity < 0) {
-				yVelocity += 0.05f;
+				yVelocity += 0.02f;
 			} else {
-				yVelocity -= 0.05f;
+				yVelocity -= 0.02f;
 			}
 			if (Mathf.Abs (xVelocity) < 0.1f) {
 				xVelocity = 0;

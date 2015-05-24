@@ -38,6 +38,20 @@ public class releasedMass : MonoBehaviour {
 	public void setReady(){
 		ready = true;
 	}
+
+	void OnTriggerEnter2D(Collider2D coll){
+		if(coll.gameObject.name == "spike(Clone)") {
+			mass *= 0.8f;
+			if (mass < 0.1f) {
+				mass = 0.1f;
+			}
+			xVelocity = - xVelocity;
+			yVelocity = - yVelocity;
+		}else if(coll.gameObject.name == "wall(Clone)") {
+			xVelocity = - xVelocity;
+			yVelocity = - yVelocity;
+		}
+	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -51,14 +65,14 @@ public class releasedMass : MonoBehaviour {
 		}
 		transform.localScale = new Vector3 (Mathf.Sqrt(mass/Mathf.PI)/2, Mathf.Sqrt(mass/Mathf.PI)/2, 1);
 		if (xVelocity < 0) {
-			xVelocity += 0.05f;
+			xVelocity += 0.02f;
 		} else {
-			xVelocity -= 0.05f;
+			xVelocity -= 0.02f;
 		}
 		if (yVelocity < 0) {
-			yVelocity += 0.05f;
+			yVelocity += 0.02f;
 		} else {
-			yVelocity -= 0.05f;
+			yVelocity -= 0.02f;
 		}
 		if (Mathf.Abs(xVelocity) < 0.1f) {
 			xVelocity = 0;
