@@ -13,10 +13,10 @@ public class Controller : MonoBehaviour {
 	private static int color = 1;
 	private int ability;
 	private float lastshoot;
-	private GameObject spike;
+	//private GameObject spike;
 	// Use this for initialization
 	void Start () {
-		ability = (int)(Random.value * 3);
+		ability = (int)(Random.value * 2);
 		lastshoot = Time.time-100;
 		gameObject.tag = "Player";
 		if (color == 1) {
@@ -37,9 +37,9 @@ public class Controller : MonoBehaviour {
 			this.GetComponent<SpriteRenderer>().color = Color.yellow;
 		}
 		color++;
-		if(ability == 2){
-			spike = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/attackspike", typeof(GameObject)), new Vector3(1212, 1123, 1232), Quaternion.identity, 0);
-		}
+		//if(ability == 2){
+			//spike = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/attackspike", typeof(GameObject)), new Vector3(1212, 1123, 1232), Quaternion.identity, 0);
+		//}
 	}
 
 	void OnTriggerStay2D(Collider2D coll){
@@ -173,12 +173,12 @@ public class Controller : MonoBehaviour {
 				yVelocity = Mathf.Abs (yVelocity);
 			transform.Translate (new Vector3 (xVelocity, yVelocity, 0) * Time.deltaTime, Camera.main.transform);
 			Camera.main.GetComponent<SmoothCamera>().target = transform;
-			if(ability == 2){
-				spike.transform.localScale = new Vector3 (Mathf.Sqrt (mass / Mathf.PI) * 2, Mathf.Sqrt (mass / Mathf.PI) * 2, 1);
-				spike.transform.rotation = Quaternion.LookRotation (Vector3.forward, mousePosition - transform.position);
-				spike.transform.eulerAngles += new Vector3(0, 0, 180f);
-				spike.transform.position = new Vector3(transform.position.x + transform.localScale.x * 3 * Mathf.Cos((spike.transform.eulerAngles.z - 270) * Mathf.Deg2Rad), transform.position.y + transform.localScale.y * 3 * Mathf.Sin((spike.transform.eulerAngles.z - 270) * Mathf.Deg2Rad),0);
-			}
+			//if(ability == 2){
+				//spike.transform.localScale = new Vector3 (Mathf.Sqrt (mass / Mathf.PI) * 2, Mathf.Sqrt (mass / Mathf.PI) * 2, 1);
+				//spike.transform.rotation = Quaternion.LookRotation (Vector3.forward, mousePosition - transform.position);
+				//spike.transform.eulerAngles += new Vector3(0, 0, 180f);
+				//spike.transform.position = new Vector3(transform.position.x + transform.localScale.x * 3 * Mathf.Cos((spike.transform.eulerAngles.z - 270) * Mathf.Deg2Rad), transform.position.y + transform.localScale.y * 3 * Mathf.Sin((spike.transform.eulerAngles.z - 270) * Mathf.Deg2Rad),0);
+			//}
 		}
 	}
 
