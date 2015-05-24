@@ -21,7 +21,7 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	private void SpawnPlayer (){
-		Network.Instantiate (Resources.Load ("Prefabs/player", typeof(GameObject)), new Vector3(0,0,0), Quaternion.identity, 0);
+		Network.Instantiate (Resources.Load ("Prefabs/player", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
 	}
 
 	private void Begin(){
@@ -38,28 +38,35 @@ public class NetworkManager : MonoBehaviour {
 
 	private void finish(){
 		Network.Disconnect();
-		Application.LoadLevel (Application.loadedLevel);
+		foreach (GameObject o in Object.FindObjectsOfType<GameObject>()) {
+			if(o.name != "Main Camera" && o.name != "background")
+				Destroy (o);
+		}
 	}
 
 	void OnGUI(){
-		if (Network.isServer && !started) {
+		if (Network.isServer && !started && !(Time.time - timer > 60)) {
 			if(GUI.Button(new Rect(100, 100, 250, 100), "Start"))
 				Begin();
 		}
 		if (Time.time - timer > 60 && Network.isServer) {
 			this.GetComponent<NetworkView> ().RPC ("EndPlayers",RPCMode.All,null);
-			if(GUI.Button(new Rect(100, 430, 250, 100), "Quit"))
-				Application.Quit();
+			if(GUI.Button(new Rect(100, 210, 250, 100), "Finish"))
+				finish();
 			GameObject[] objects = GameObject.FindGameObjectsWithTag("Player");
+			if(objects.Length > 0){
 			GameObject winner = objects[0];
-			for(int i = 0; i < objects.Length; i++){
-				if(objects[i].GetComponent<Controller>().getMass() > winner.GetComponent<Controller>().getMass())
-					winner = objects[i];
+				for(int i = 0; i < objects.Length; i++){
+					if(objects[i].GetComponent<Controller>().getMass() > winner.GetComponent<Controller>().getMass())
+						winner = objects[i];
+				}
+				GUI.TextField(new Rect(100, 100, 400, 100),"Game Over " + winner.GetComponent<SpriteRenderer>().color + " wins!");
 			}
-			GUI.TextField(new Rect(100, 210, 400, 100),"Game Over " + winner.GetComponent<SpriteRenderer>().color + " wins!");
 		}
 		if (Network.isClient && !started) {
 			GUI.Button(new Rect(100, 100, 250, 100), "Waiting for Server");
+			if(GUI.Button(new Rect(100, 210, 250, 100), "Finish"))
+				finish();
 		}
 		if (!Network.isClient && !Network.isServer) {
 			if(GUI.Button(new Rect(100, 100, 250, 100), "Start Server"))
