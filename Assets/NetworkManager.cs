@@ -40,7 +40,7 @@ public class NetworkManager : MonoBehaviour {
 			if(GUI.Button(new Rect(100, 100, 250, 100), "Start"))
 				Begin();
 		}
-		if (Time.time - timer > 60) {
+		if (Time.time - timer > 60 && Network.isServer) {
 			if(GUI.Button(new Rect(100, 430, 250, 100), "Quit"))
 				Application.Quit();
 			GameObject[] objects = GameObject.FindGameObjectsWithTag("Player");
