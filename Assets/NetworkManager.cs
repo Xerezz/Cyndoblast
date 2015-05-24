@@ -28,6 +28,12 @@ public class NetworkManager : MonoBehaviour {
 		this.GetComponent<NetworkView> ().RPC ("SpawnPlayers",RPCMode.All,null);
 		started = true;
 		timer = Time.time;
+		Network.Instantiate (Resources.Load ("Prefabs/spike", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
+		Network.Instantiate (Resources.Load ("Prefabs/spike", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
+		Network.Instantiate (Resources.Load ("Prefabs/spike", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
+		Network.Instantiate (Resources.Load ("Prefabs/spike", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
+		Network.Instantiate (Resources.Load ("Prefabs/spike", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
+		Network.Instantiate (Resources.Load ("Prefabs/spike", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
 	}
 
 	private void finish(){

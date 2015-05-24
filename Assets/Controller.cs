@@ -39,6 +39,13 @@ public class Controller : MonoBehaviour {
 		if(coll.gameObject.name == "mass(Clone)" && coll.gameObject.GetComponent<releasedMass>().getReady()) {
 			mass += coll.gameObject.GetComponent<releasedMass>().getMass();
 			Destroy(coll.gameObject);
+		}else if(coll.gameObject.name == "spike(Clone)") {
+			mass *= 0.7f;
+			if (mass < 0.1f) {
+				mass = 0.1f;
+			}
+			xVelocity = - xVelocity;
+			yVelocity = - yVelocity;
 		}
 	}
 
