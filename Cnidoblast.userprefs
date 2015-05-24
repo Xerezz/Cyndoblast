@@ -1,10 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Controller.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\releasedMass.cs">
     <Files>
-      <File FileName="Assets\Controller.cs" Line="17" Column="3" />
-      <File FileName="Assets\releasedMass.cs" Line="12" Column="40" />
-      <File FileName="Assets\NetworkManager.cs" Line="106" Column="72" />
+      <File FileName="Assets\NetworkManager.cs" Line="39" Column="53" />
+      <File FileName="Assets\Controller.cs" Line="43" Column="15" />
+      <File FileName="Assets\releasedMass.cs" Line="44" Column="15" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
