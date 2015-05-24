@@ -13,7 +13,7 @@ public class Controller : MonoBehaviour {
 	private static int color = 1;
 	private int ability;
 	private float lastshoot;
-
+	private GameObject spike;
 	// Use this for initialization
 	void Start () {
 		ability = (int)(Random.value * 3);
@@ -37,6 +37,9 @@ public class Controller : MonoBehaviour {
 			this.GetComponent<SpriteRenderer>().color = Color.yellow;
 		}
 		color++;
+		if(ability == 2){
+			spike = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/attackspike", typeof(GameObject)), new Vector3(1212, 1123, 1232), Quaternion.identity, 0);
+		}
 	}
 
 	void OnTriggerStay2D(Collider2D coll){
@@ -65,8 +68,22 @@ public class Controller : MonoBehaviour {
 			};
 			releaseMass.GetComponent<releasedMass> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
 			Destroy(coll.gameObject);
+		}else if(coll.gameObject.name == "attackspike(Clone)") {
+			float lost = mass * 0.4f;
+			mass *= 0.6f;
+			float angle = Random.value * Mathf.PI*2;
+			xVelocity = 40*Mathf.Cos(angle) * -1 * 0.5f/Mathf.Exp(mass/Mathf.PI/2);
+			yVelocity = 40*Mathf.Sin(angle) * -1 * 0.5f/Mathf.Exp(mass/Mathf.PI/2);
+			GameObject releaseMass = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/mass", typeof(GameObject)), transform.position, Quaternion.identity, 0);
+			object[] args = {
+				lost,
+				40 * Mathf.Cos (angle) * (lost) / Mathf.Exp ((lost) / Mathf.PI / 2),
+				40 * Mathf.Sin (angle) * (lost) / Mathf.Exp ((lost) / Mathf.PI / 2)
+			};
+			releaseMass.GetComponent<releasedMass> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
 		}else if(coll.gameObject.name == "spike(Clone)") {
-			mass *= 0.7f;
+			if(ability == 2)
+				mass *= 0.9f;
 			if (mass < 0.1f) {
 				mass = 0.1f;
 			}
@@ -156,6 +173,12 @@ public class Controller : MonoBehaviour {
 				yVelocity = Mathf.Abs (yVelocity);
 			transform.Translate (new Vector3 (xVelocity, yVelocity, 0) * Time.deltaTime, Camera.main.transform);
 			Camera.main.GetComponent<SmoothCamera>().target = transform;
+			if(ability == 2){
+				spike.transform.localScale = new Vector3 (Mathf.Sqrt (mass / Mathf.PI) * 2, Mathf.Sqrt (mass / Mathf.PI) * 2, 1);
+				spike.transform.rotation = Quaternion.LookRotation (Vector3.forward, mousePosition - transform.position);
+				spike.transform.eulerAngles += new Vector3(0, 0, 180f);
+				spike.transform.position = new Vector3(transform.position.x + transform.localScale.x * 3 * Mathf.Cos((spike.transform.eulerAngles.z - 270) * Mathf.Deg2Rad), transform.position.y + transform.localScale.y * 3 * Mathf.Sin((spike.transform.eulerAngles.z - 270) * Mathf.Deg2Rad),0);
+			}
 		}
 	}
 
