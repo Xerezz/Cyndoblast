@@ -5,6 +5,7 @@ public class NetworkManager : MonoBehaviour {
 
 	private string typeName = "Cnidoblast";
 	private string gameName = "RoomName";
+	private bool started = false;
 
 	private void StartServer(){
 		//MasterServer.ipAddress = "127.0.0.1";
@@ -14,14 +15,25 @@ public class NetworkManager : MonoBehaviour {
 
 	void OnServerInitialized(){
 		Debug.Log ("Server Initialized");
-		SpawnPlayer ();
+		//SpawnPlayer ();
 	}
 
 	private void SpawnPlayer (){
 		Network.Instantiate (Resources.Load ("Prefabs/player", typeof(GameObject)), new Vector3(0,0,0), Quaternion.identity, 0);
 	}
 
+	private void Begin(){
+		this.GetComponent<NetworkView> ().RPC ("SpawnPlayers",RPCMode.All,null);
+	}
+
 	void OnGUI(){
+		if (Network.isServer && !started) {
+			if(GUI.Button(new Rect(100, 100, 250, 100), "Start"))
+				Begin();
+		}
+		if (Network.isClient && !started) {
+			GUI.Button(new Rect(100, 100, 250, 100), "Waiting for Server");
+		}
 		if (!Network.isClient && !Network.isServer) {
 			if(GUI.Button(new Rect(100, 100, 250, 100), "Start Server"))
 				StartServer();
@@ -62,7 +74,13 @@ public class NetworkManager : MonoBehaviour {
 
 	void OnConnectedToServer(){
 		Debug.Log("Joined Server");
+		//SpawnPlayer ();
+	}
+
+	[RPC]
+	public void SpawnPlayers(){
 		SpawnPlayer ();
+		started = true;
 	}
 
 	// Use this for initialization
