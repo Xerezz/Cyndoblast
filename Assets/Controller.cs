@@ -11,9 +11,11 @@ public class Controller : MonoBehaviour {
 	private const int screenWidth = 80;
 	private const int screenHeight = 40;
 	private static int color = 1;
+	private float lastshoot;
 
 	// Use this for initialization
 	void Start () {
+		lastshoot = Time.time-10;
 		gameObject.tag = "Player";
 		if (color == 1) {
 			this.GetComponent<SpriteRenderer>().color = Color.blue;
@@ -39,6 +41,20 @@ public class Controller : MonoBehaviour {
 		if(coll.gameObject.name == "mass(Clone)" && coll.gameObject.GetComponent<releasedMass>().getReady()) {
 			mass += coll.gameObject.GetComponent<releasedMass>().getMass();
 			Destroy(coll.gameObject);
+		}else if(coll.gameObject.name == "bullet(Clone)" && coll.gameObject.GetComponent<bullet>().getReady()) {
+			float lost = mass * 0.4f;
+			mass *= 0.6f;
+			float angle = Random.value * Mathf.PI*2;
+			xVelocity = 40*Mathf.Cos(angle) * -1 * charge/Mathf.Exp(mass/Mathf.PI/2);
+			yVelocity = 40*Mathf.Sin(angle) * -1 * charge/Mathf.Exp(mass/Mathf.PI/2);
+			GameObject releaseMass = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/mass", typeof(GameObject)), transform.position, Quaternion.identity, 0);
+			object[] args = {
+				lost,
+				40 * Mathf.Cos (angle) * (lost) / Mathf.Exp ((lost) / Mathf.PI / 2),
+				40 * Mathf.Sin (angle) * (lost) / Mathf.Exp ((lost) / Mathf.PI / 2)
+			};
+			releaseMass.GetComponent<releasedMass> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
+			Destroy(coll.gameObject);
 		}else if(coll.gameObject.name == "spike(Clone)") {
 			mass *= 0.8f;
 			if (mass < 0.1f) {
@@ -56,15 +72,32 @@ public class Controller : MonoBehaviour {
 		if(coll.gameObject.name == "mass(Clone)") {
 			coll.gameObject.GetComponent<releasedMass>().setReady();
 		}
+		if(coll.gameObject.name == "bullet(Clone)") {
+			coll.gameObject.GetComponent<bullet>().setReady();
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (mass < 0.1f) {
+			mass = 0.1f;
+		}
 		if (this.GetComponent<NetworkView>().isMine) {
 			this.GetComponent<Rigidbody2D>().mass = mass;
 			transform.localScale = new Vector3 (Mathf.Sqrt (mass / Mathf.PI) / 2, Mathf.Sqrt (mass / Mathf.PI) / 2, 1);
 			Vector3 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			transform.rotation = Quaternion.LookRotation (Vector3.forward, mousePosition - transform.position);
+			if(Input.GetMouseButtonDown(1) && Time.time - lastshoot > 10){
+				lastshoot = Time.time;
+				mass *= 0.7f;
+				float angle = (transform.eulerAngles.z - 270) * Mathf.Deg2Rad;
+				GameObject bullet = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/bullet", typeof(GameObject)), transform.position, Quaternion.identity, 0);
+				object[] args = {
+					20 * Mathf.Cos (angle) / Mathf.Exp ((0.01f) / Mathf.PI / 2),
+					20 * Mathf.Sin (angle) / Mathf.Exp ((0.01f) / Mathf.PI / 2)
+				};
+				bullet.GetComponent<bullet> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
+			}
 			if (Input.GetMouseButton (0)) {
 				charging = true;
 				charge += 0.005f;
@@ -116,9 +149,6 @@ public class Controller : MonoBehaviour {
 		yVelocity = 40*Mathf.Sin(angle) * -1 * charge/Mathf.Exp(mass/Mathf.PI/2);
 		float oldMass = mass;
 		mass *= (1-charge)*0.9f;
-		if (mass < 0.1f) {
-			mass = 0.1f;
-		}
 		GameObject releaseMass = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/mass", typeof(GameObject)), transform.position, Quaternion.identity, 0);
 		object[] args = {
 			oldMass - mass,
