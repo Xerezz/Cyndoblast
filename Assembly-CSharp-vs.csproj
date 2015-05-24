@@ -53,6 +53,7 @@
      <Compile Include="Assets\poisonBullet.cs" />
      <Compile Include="Assets\poisonGas.cs" />
      <Compile Include="Assets\releasedMass.cs" />
+     <Compile Include="Assets\spikes.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

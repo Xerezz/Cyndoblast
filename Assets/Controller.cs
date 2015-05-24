@@ -66,7 +66,7 @@ public class Controller : MonoBehaviour {
 			releaseMass.GetComponent<releasedMass> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
 			Destroy(coll.gameObject);
 		}else if(coll.gameObject.name == "spike(Clone)") {
-			mass *= 0.8f;
+			mass *= 0.7f;
 			if (mass < 0.1f) {
 				mass = 0.1f;
 			}

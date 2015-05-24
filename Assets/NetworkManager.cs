@@ -17,6 +17,7 @@ public class NetworkManager : MonoBehaviour {
 
 	void OnServerInitialized(){
 		Debug.Log ("Server Initialized");
+		started = false;
 		//SpawnPlayer ();
 	}
 
@@ -37,8 +38,9 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	private void finish(){
-		Network.Disconnect();
 		started = false;
+		this.GetComponent<NetworkView> ().RPC ("EndPlayers",RPCMode.All,null);
+		Network.Disconnect();
 		foreach (GameObject o in Object.FindObjectsOfType<GameObject>()) {
 			if(o.name != "Main Camera" && o.name != "background")
 				Destroy (o);

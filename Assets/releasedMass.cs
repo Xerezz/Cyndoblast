@@ -39,9 +39,17 @@ public class releasedMass : MonoBehaviour {
 		ready = true;
 	}
 
+	void OnTriggerStay2D(Collider2D coll){
+		if(coll.gameObject.name == "poisongas(Clone)") {
+			float lost = mass * 0.01f;
+			mass -= lost;
+			coll.gameObject.GetComponent<poisonGas>().setMass(lost + coll.gameObject.GetComponent<poisonGas>().getMass());
+		}
+	}  
+
 	void OnTriggerEnter2D(Collider2D coll){
 		if(coll.gameObject.name == "spike(Clone)") {
-			mass *= 0.8f;
+			mass *= 0.7f;
 			if (mass < 0.1f) {
 				mass = 0.1f;
 			}
