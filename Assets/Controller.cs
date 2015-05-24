@@ -50,6 +50,7 @@ public class Controller : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (this.GetComponent<NetworkView>().isMine) {
+			this.GetComponent<Rigidbody2D>().mass = mass;
 			transform.localScale = new Vector3 (Mathf.Sqrt (mass / Mathf.PI) / 2, Mathf.Sqrt (mass / Mathf.PI) / 2, 1);
 			Vector3 mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 			transform.rotation = Quaternion.LookRotation (Vector3.forward, mousePosition - transform.position);
@@ -103,13 +104,13 @@ public class Controller : MonoBehaviour {
 		if (mass < 0.1f) {
 			mass = 0.1f;
 		}
-		GameObject releasedMass = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/mass", typeof(GameObject)), transform.position, Quaternion.identity, 0);
+		GameObject releaseMass = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/mass", typeof(GameObject)), transform.position, Quaternion.identity, 0);
 		object[] args = {
 			oldMass - mass,
 			40 * Mathf.Cos (angle) * (oldMass - mass) / Mathf.Exp ((oldMass - mass) / Mathf.PI / 2),
 			40 * Mathf.Sin (angle) * (oldMass - mass) / Mathf.Exp ((oldMass - mass) / Mathf.PI / 2)
 		};
-		releasedMass.GetComponent<releasedMass> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
+		releaseMass.GetComponent<releasedMass> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
 		charge = 0;
 	}
 

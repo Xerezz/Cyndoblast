@@ -102,6 +102,15 @@ public class NetworkManager : MonoBehaviour {
 		}
 		if (Network.isServer && started) {
 			this.GetComponent<NetworkView> ().RPC ("SpawnPlayers",RPCMode.All,null);
+			if (Random.value < 0.01) {
+				GameObject releaseMass = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/mass", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 0)), Quaternion.identity, 0);
+				object[] args = {
+					Random.value,
+					0.0f,
+					0.0f
+				};
+				releaseMass.GetComponent<releasedMass> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
+			}
 		}
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Network.Disconnect();
