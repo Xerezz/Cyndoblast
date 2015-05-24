@@ -51,7 +51,7 @@ public class NetworkManager : MonoBehaviour {
 		}
 		if (Time.time - timer > 60 && Network.isServer) {
 			this.GetComponent<NetworkView> ().RPC ("EndPlayers",RPCMode.All,null);
-			if(GUI.Button(new Rect(100, 210, 250, 100), "Finish"))
+			if(GUI.Button(new Rect(100, 210, 250, 100), "Reset"))
 				finish();
 			GameObject[] objects = GameObject.FindGameObjectsWithTag("Player");
 			if(objects.Length > 0){
@@ -65,7 +65,7 @@ public class NetworkManager : MonoBehaviour {
 		}
 		if (Network.isClient && !started) {
 			GUI.Button(new Rect(100, 100, 250, 100), "Waiting for Server");
-			if(GUI.Button(new Rect(100, 210, 250, 100), "Finish"))
+			if(GUI.Button(new Rect(100, 210, 250, 100), "Reset"))
 				finish();
 		}
 		if (!Network.isClient && !Network.isServer) {
@@ -77,7 +77,10 @@ public class NetworkManager : MonoBehaviour {
 
 			gameName = GUI.TextField(new Rect(100, 320, 250, 100),gameName, 25);
 
-			if(GUI.Button(new Rect(100, 430, 250, 100), "Quit"))
+			if(GUI.Button(new Rect(100, 430, 250, 100), "Reset"))
+				finish();
+
+			if(GUI.Button(new Rect(100, 540, 250, 100), "Quit"))
 				Application.Quit();
 
 			if(hostList != null){
