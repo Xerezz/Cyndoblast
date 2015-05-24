@@ -25,7 +25,6 @@ public class NetworkManager : MonoBehaviour {
 
 	private void Begin(){
 		this.GetComponent<NetworkView> ().RPC ("SpawnPlayers",RPCMode.All,null);
-		Network.Instantiate (Resources.Load ("Prefabs/player", typeof(GameObject)), new Vector3(0,0,0), Quaternion.identity, 0);
 		started = true;
 	}
 
@@ -90,6 +89,7 @@ public class NetworkManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Screen.SetResolution (1024, 768, false);
 		MasterServer.ClearHostList();
 		MasterServer.RequestHostList (typeName);
 	}

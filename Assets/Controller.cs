@@ -10,10 +10,28 @@ public class Controller : MonoBehaviour {
 	private bool charging = false;
 	private const int screenWidth = 80;
 	private const int screenHeight = 40;
+	private static int color = 1;
 
 	// Use this for initialization
 	void Start () {
-
+		if (color == 1) {
+			this.GetComponent<SpriteRenderer>().color = Color.blue;
+		}else if (color == 2) {
+			this.GetComponent<SpriteRenderer>().color = Color.red;
+		}else if (color == 3) {
+			this.GetComponent<SpriteRenderer>().color = Color.green;
+		}else if (color == 4) {
+			this.GetComponent<SpriteRenderer>().color = Color.black;
+		}else if (color == 5) {
+			this.GetComponent<SpriteRenderer>().color = Color.cyan;
+		}else if (color == 6) {
+			this.GetComponent<SpriteRenderer>().color = Color.white;
+		}else if (color == 7) {
+			this.GetComponent<SpriteRenderer>().color = Color.grey;
+		}else if (color == 8) {
+			this.GetComponent<SpriteRenderer>().color = Color.yellow;
+		}
+		color++;
 	}
 
 	void OnTriggerEnter2D(Collider2D coll){
