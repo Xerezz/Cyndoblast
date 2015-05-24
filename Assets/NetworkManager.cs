@@ -28,10 +28,10 @@ public class NetworkManager : MonoBehaviour {
 		this.GetComponent<NetworkView> ().RPC ("SpawnPlayers",RPCMode.All,null);
 		started = true;
 		timer = Time.time;
-		int spikes = (int)(Random.value * 9) + 3;
+		int spikes = (int)(Random.value * 6) + 2;
 		for(int i = 0; i < spikes; i++)
 			Network.Instantiate (Resources.Load ("Prefabs/spike", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
-		int walls = (int)(Random.value * 3) + 1;
+		int walls = (int)(Random.value * 2) + 1;
 		for(int i = 0; i < walls; i++)
 			Network.Instantiate (Resources.Load ("Prefabs/wall", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
 	}
