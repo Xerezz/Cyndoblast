@@ -34,6 +34,14 @@ public class releasedMass : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(this.GetComponent<NetworkView>().isMine){
+			object[] args = {
+				mass,
+				xVelocity,
+				yVelocity
+			};
+			this.GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
+		}
 		transform.localScale = new Vector3 (Mathf.Sqrt(mass/Mathf.PI)/2, Mathf.Sqrt(mass/Mathf.PI)/2, 1);
 		if (xVelocity < 0) {
 			xVelocity += 0.05f;
