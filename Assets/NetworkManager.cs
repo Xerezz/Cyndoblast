@@ -120,6 +120,16 @@ public class NetworkManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Random.value < 0.01 && Network.isServer && started) {
+			GameObject releaseMass = (GameObject)Network.Instantiate (Resources.Load ("Prefabs/mass", typeof(GameObject)), Camera.main.ViewportToWorldPoint(new Vector3(Random.value, Random.value, 10)), Quaternion.identity, 0);
+			object[] args = {
+				Random.value/10,
+				0.0f,
+				0.0f
+			};
+			releaseMass.GetComponent<releasedMass> ().GetComponent<NetworkView>().RPC("setVariable", RPCMode.All,args);
+			releaseMass.GetComponent<releasedMass> ().GetComponent<NetworkView>().RPC("makeReady", RPCMode.All,null);
+		}
 		if(MasterServer.PollHostList().Length != 0){
 			hostList = MasterServer.PollHostList();
 			MasterServer.ClearHostList();

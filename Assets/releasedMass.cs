@@ -22,6 +22,10 @@ public class releasedMass : MonoBehaviour {
 		xVelocity = x;
 		yVelocity = y;
 	}
+	[RPC]
+	public void makeReady(){
+		ready = true;
+	}
 
 	public float getMass(){
 		return mass;
