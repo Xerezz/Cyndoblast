@@ -7,6 +7,7 @@ public class NetworkManager : MonoBehaviour {
 	private string gameName = "RoomName";
 	private bool started = false;
 	public float timer;
+	private float volume = 0.77f;
 
 	private void StartServer(){
 		//MasterServer.ipAddress = "127.0.0.1";
@@ -72,6 +73,12 @@ public class NetworkManager : MonoBehaviour {
 				finish();
 		}
 		if (!Network.isClient && !Network.isServer) {
+
+			volume = GUI.VerticalSlider(new Rect(70, 20, 20, 210), volume, 1.0f, 0.0f);
+			GUI.Label(new Rect(65, 240, 20, 20), "Vol");
+
+			Camera.main.GetComponent<AudioSource>().volume = volume;
+
 			if(GUI.Button(new Rect(100, 20, 250, 100), "Start Server"))
 				StartServer();
 
