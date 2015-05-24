@@ -8,6 +8,8 @@ public class Controller : MonoBehaviour {
 	private float yVelocity = 0;
 	private float charge = 0;
 	private bool charging = false;
+	private const int screenWidth = 80;
+	private const int screenHeight = 40;
 
 	// Use this for initialization
 	void Start () {
@@ -65,17 +67,16 @@ public class Controller : MonoBehaviour {
 			if (Mathf.Abs (yVelocity) < 0.1f) {
 				yVelocity = 0;
 			}
-			Vector3 bounds = Camera.main.WorldToViewportPoint (transform.position);
-			if (bounds.x > 1)
+			if (transform.position.x > screenWidth/2)
 				xVelocity = - Mathf.Abs (xVelocity);
-			if (bounds.x < 0)
+			if (transform.position.x < -screenWidth/2)
 				xVelocity = Mathf.Abs (xVelocity);
-			if (bounds.y > 1)
+			if (transform.position.y > screenHeight/2)
 				yVelocity = - Mathf.Abs (yVelocity);
-			if (bounds.y < 0)
+			if (transform.position.y < -screenHeight/2)
 				yVelocity = Mathf.Abs (yVelocity);
 			transform.Translate (new Vector3 (xVelocity, yVelocity, 0) * Time.deltaTime, Camera.main.transform);
-			
+			Camera.main.GetComponent<SmoothCamera>().target = transform;
 		}
 	}
 
