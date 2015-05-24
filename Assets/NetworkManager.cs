@@ -102,6 +102,7 @@ public class NetworkManager : MonoBehaviour {
 		}
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Network.Disconnect();
+			started = false;
 		}
 	}
 }
