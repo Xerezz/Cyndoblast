@@ -79,8 +79,10 @@ public class NetworkManager : MonoBehaviour {
 
 	[RPC]
 	public void SpawnPlayers(){
-		SpawnPlayer ();
-		started = true;
+		if (!started) {
+			SpawnPlayer ();
+			started = true;
+		}
 	}
 
 	// Use this for initialization
@@ -99,6 +101,9 @@ public class NetworkManager : MonoBehaviour {
 				i++;
 			}
 			MasterServer.ClearHostList();
+		}
+		if (Network.isServer && started) {
+			this.GetComponent<NetworkView> ().RPC ("SpawnPlayers",RPCMode.Others,null);
 		}
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			Network.Disconnect();

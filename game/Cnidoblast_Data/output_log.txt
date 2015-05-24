@@ -15,7 +15,27 @@ Platform assembly: C:\users\bren077s\My Documents\Cnidoblast\game\Cnidoblast_Dat
 Loading C:\users\bren077s\My Documents\Cnidoblast\game\Cnidoblast_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: C:\users\bren077s\My Documents\Cnidoblast\game\Cnidoblast_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading C:\users\bren077s\My Documents\Cnidoblast\game\Cnidoblast_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.089 seconds
+- Completed reload, in  0.081 seconds
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
+<RI> Touch support initialization failed: Call not implemented.
+.
+Platform assembly: C:\users\bren077s\My Documents\Cnidoblast\game\Cnidoblast_Data\Managed\System.Core.dll (this message is harmless)
+RoomName
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+Server Initialized
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+Sever Registered
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebug.gen.cpp Line: 56)
+
+Couldn't send RPC function 'SpawnPlayers'
+
+ 
+(Filename:  Line: 2472)
+
